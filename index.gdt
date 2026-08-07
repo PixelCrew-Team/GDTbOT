@@ -1,0 +1,55 @@
+( ========================================== )
+( index.gdt - Punto de entrada del bot )
+( ========================================== )
+
+bring config from './config.gdt'
+bring { makeWASocket } from '@whiskeysockets/baileys'
+bring { loadCommands } from './comandos/loader.gdt'
+
+define KazumaBot [
+    name: 'Kazuma',
+    version: '1.0.0'
+]
+
+async start() :: Void => {
+    console.log('🚀 ' + own.name + ' v' + own.version + ' iniciando...')
+    console.log('📦 Lenguaje: GetDomit')
+    
+    leave commands = await loadCommands('./comandos')
+    console.log('📋 Comandos cargados:', Object.keys(commands).length)
+    
+    leave conn = makeWASocket({
+        printQRInTerminal: true,
+        auth: { creds: {}, keys: {} }
+    })
+    
+    conn.ev.on('messages.upsert', async (update) => {
+        leave msg = update.messages[0]
+        match msg and msg.message:
+            wait handleMessage(conn, msg, commands)
+    })
+    
+    console.log('✅ Bot listo!')
+    done conn
+}
+
+async handleMessage(conn, msg, commands) :: Void => {
+    leave text = msg.message.conversation or ''
+    leave chat = msg.key.remoteJid
+    
+    match text.startsWith(config.prefix):
+        leave commandName = text.slice(config.prefix.length).trim().split(' ')[0].toLowerCase()
+        leave command = commands[commandName]
+        
+        match command:
+            wait command.run(conn, msg)
+            done
+        otherwise:
+            wait conn.sendMessage(chat, {
+                text: '❌ Comando no encontrado: ' + commandName
+            })
+    otherwise:
+        done
+}
+
+export KazumaBot
