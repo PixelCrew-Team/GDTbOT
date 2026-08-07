@@ -1,0 +1,15 @@
+( ========================================== )
+( config.gdt - Configuración del bot )
+( ========================================== )
+
+export {
+    prefix: '!',
+    name: 'Kazuma',
+    version: '1.0.0',
+    author: 'PixelCrew Team',
+    repo: 'https://github.com/PixelCrew-Team/RunGdt',
+    colors: {
+        primary: '#00D2FF',
+        secondary: '#7B68EE'
+    }
+}
