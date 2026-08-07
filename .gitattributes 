@@ -1,0 +1,5 @@
+*.gdt linguist-language=GetDomit
+*.gdt linguist-vendored=false
+*.gdt linguist-detectable=true
+*.gdt linguist-binary=false
+*.gdt text eol=lf
