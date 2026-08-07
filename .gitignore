@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+.env
+tmp/
+sessions/
+jsons/*.json
+!jsons/.gitkeep
+package-lock.json
