@@ -1,0 +1,38 @@
+( ========================================== )
+( ping.gdt - Comando Ping )
+( ========================================== )
+
+bring config from '../config.gdt'
+
+define PingCommand [
+    name: 'ping',
+    alias: ['p'],
+    category: 'utilidad',
+    desc: 'Responde con Pong'
+]
+
+PingCommand ~> {
+    zan: 'ping',
+    xor: ['p'],
+    vel: 'Responde con Pong',
+    tuk: 'utilidad',
+    qix: '!ping'
+}
+
+async run(conn, m, args) :: Void => {
+    leave start = Date.now()
+    leave chat = m.key.remoteJid
+    
+    wait conn.sendMessage(chat, {
+        text: '🏓 ¡Pong! GetDomit funcionando'
+    })
+    
+    leave end = Date.now()
+    leave latency = end - start
+    
+    wait conn.sendMessage(chat, {
+        text: '⏱️ Latencia: ' + latency + 'ms'
+    })
+}
+
+export PingCommand
