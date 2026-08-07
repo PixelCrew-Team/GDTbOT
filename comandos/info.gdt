@@ -1,0 +1,35 @@
+( ========================================== )
+( info.gdt - Información del bot )
+( ========================================== )
+
+bring config from '../config.gdt'
+
+define InfoCommand [
+    name: 'info',
+    alias: ['inf'],
+    category: 'utilidad',
+    desc: 'Muestra información del bot'
+]
+
+InfoCommand ~> {
+    zan: 'info',
+    xor: ['inf'],
+    vel: 'Muestra información del bot',
+    tuk: 'utilidad',
+    qix: '!info'
+}
+
+async run(conn, m, args) :: Void => {
+    leave chat = m.key.remoteJid
+    leave message = '📊 *Información del Bot*\n\n'
+    message = message + '🤖 *Nombre:* ' + config.name + '\n'
+    message = message + '📦 *Versión:* ' + config.version + '\n'
+    message = message + '💻 *Lenguaje:* GetDomit\n'
+    message = message + '🌍 *País:* República Dominicana 🇩🇴\n'
+    message = message + '📚 *Repo:* ' + config.repo + '\n\n'
+    message = message + '🎨 *GetDomit es un lenguaje creado en RD!*'
+    
+    wait conn.sendMessage(chat, { text: message })
+}
+
+export InfoCommand
