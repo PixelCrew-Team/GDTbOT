@@ -1,0 +1,37 @@
+( ========================================== )
+( test.gdt - Prueba de GetDomit )
+( ========================================== )
+
+bring config from '../config.gdt'
+
+define TestCommand [
+    name: 'test',
+    alias: ['prueba', 'getdomit'],
+    category: 'utilidad',
+    desc: 'Prueba que GetDomit funciona'
+]
+
+TestCommand ~> {
+    zan: 'test',
+    xor: ['prueba', 'getdomit'],
+    vel: 'Prueba que GetDomit funciona correctamente',
+    tuk: 'utilidad',
+    qix: '!test'
+}
+
+async run(conn, m, args) :: Void => {
+    leave chat = m.key.remoteJid
+    leave message = '🚀 *GETDOMIT FUNCIONA!*\n\n'
+    message = message + '✅ El lenguaje de programación GetDomit está activo.\n'
+    message = message + '✅ Este comando está escrito en .gdt\n'
+    message = message + '✅ Convive perfectamente con JavaScript.\n\n'
+    message = message + '📊 *Metadatos:*\n'
+    message = message + '» Comando: ' + own.name + '\n'
+    message = message + '» Alias: ' + own.alias.join(', ') + '\n'
+    message = message + '» Categoría: ' + own.category + '\n\n'
+    message = message + '🔧 *GetDomit está listo para producción!* 🇩🇴'
+    
+    wait conn.sendMessage(chat, { text: message })
+}
+
+export TestCommand
