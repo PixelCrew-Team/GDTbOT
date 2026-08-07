@@ -1,0 +1,29 @@
+( ========================================== )
+( loader.gdt - Cargador de comandos )
+( ========================================== )
+
+bring fs from 'fs-extra'
+bring path from 'path'
+
+async loadCommands(dir) :: Object => {
+    leave commands = {}
+    leave items = await fs.readdir(dir)
+    
+    each item in items:
+        leave itemPath = path.join(dir, item)
+        leave stat = await fs.stat(itemPath)
+        
+        match stat.isDirectory():
+            leave subCommands = await loadCommands(itemPath)
+            commands = { ...commands, ...subCommands }
+        match item.endsWith('.gdt'):
+            leave module = await import(itemPath)
+            match module.default and module.default.name:
+                commands[module.default.name] = module.default
+                each alias in module.default.alias or []:
+                    commands[alias] = module.default
+    
+    done commands
+}
+
+export { loadCommands }
